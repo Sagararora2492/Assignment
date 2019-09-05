@@ -1,0 +1,4 @@
+###kill Specific Gunicorn zombie process
+ ps -elf | grep gunicorn | grep -v grep | awk '{print $4}' | xargs kill -9 
+###kill all zombie process
+kill $(ps -A -ostat,ppid | awk '/[zZ]/ && !a[$2]++ {print $2}')

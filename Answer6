@@ -1,0 +1,23 @@
+#!/bin/bash
+####was not able to complete due to time issue
+function getCloudWatchMetrics() {
+start_time_sec=`date +%s`
+end_time_sec=$(($start_time_sec + 60))
+start-time= date -d @$start_time_sec +%Y-%m-%dT%H:%M:%S
+end-time= date -d @$end_time_sec +%Y-%m-%dT%H:%M:%S
+
+#aws cloudwatch get-metric-statistics --metric-name ActiveConnectionCount --namespace AWS/ELB --start-time 2019-09-01T23:18:00Z --end-time 2019-09-04T22:18:00Z --period 3600 --statistics Maximum
+aws cloudwatch get-metric-statistics --metric-name ActiveConnectionCount --namespace AWS/ELB --start-time $start-timeZ --end-time $end-timeZ --period 60 --statistics Maximum
+}
+
+function spinUpEC2ELB() {
+    echo "launching EC2"
+    aws ec2 run-instances --image-id ami-06df6c58238048ca6 --count 1 --instance-type t2.micro --key-name SagarKey --security-group-ids sg-00551d05fa27ad517 --subnet-id subnet-1576235f >> /tmp/instance.json
+    instanceId=`cat /tmp/instance.json |  grep InstanceId | awk '{print $2}' | sed 's/\"//g' | sed 's/,/ /g'`
+    aws elb register-instances-with-load-balancer --load-balancer-name testELB --instances $instanceId
+
+}
+
+
+
+

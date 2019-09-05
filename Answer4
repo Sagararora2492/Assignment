@@ -1,0 +1,8 @@
+#!/bin/bash
+
+sum=`echo "0.0238063905753+0.0308368914424+0.0230014918637+0.0274232220275+0.0184563749986"| bc`
+count=5
+AVG=`echo "$sum/$count" | bc -l`
+#echo $AVG
+Value=`echo $AVG | bc -l | xargs printf "%.2f"`
+echo $Value
